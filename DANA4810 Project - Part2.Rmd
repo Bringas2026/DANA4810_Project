@@ -16,10 +16,48 @@ GitHub solves these problems by giving every team member their own local copy of
 ## Getting started
 
 We need to set up three thing before working on our documents:
-1.Install Git
-2.Create a Github Account
-3.Connect RStudio to Github
+1.Install Git<br>
+2.Create a Github Account<br>
+3.Connect RStudio to Github<br>
 
 ```{r}
 
 ```
+
+## Basic Operation for Daily Use
+
+1.Open RStudio<br>
+2.Select a Project<br>
+3.Pull a file that you would like to work on<br>
+4.Commit your change<br>
+5.Push to a Github<br>
+
+```{r}
+
+```
+
+## Version Control
+
+1.How to make a version<br>
+2.How to check a history and differences<br>
+3.How to restore from a staging area<br>
+4.Hot to restore from a Github<br>
+5.How to communicate with team members<br>
+
+```{r}
+
+```
+
+## Tips
+
+1.Do's & Don'ts<br>
+2.Common Errors<br>
+
+```{r}
+
+```
+
+## Document Update History
+
+dd June 2026,  New Creation<br>
+

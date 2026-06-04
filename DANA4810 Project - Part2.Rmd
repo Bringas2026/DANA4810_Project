@@ -13,12 +13,22 @@ Imagine you are delivering a final presentation for the company with your teamma
 
 GitHub solves these problems by giving every team member their own local copy of the files, tracking every change with a timestamp and author name, and allowing the team to merge contributions without overwriting each other's work.
 
-## Getting started
+## Getting Started
 
 We need to set up three thing before working on our documents:
 1.Install Git<br>
 2.Create a Github Account<br>
 3.Connect RStudio to Github<br>
+4.Setup Account Information<br>
+  To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.
+  How to do that:
+  1.Set your Github Username
+    git config --global user.name "Your GitHub Username"
+  2.Set your Github Email Address
+    git config --global user.email "Your GitHub Email Address"
+    Note:
+    - Make sure to use the exact same email address you used to create your Github account.
+    - This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)
 
 ```{r}
 
@@ -59,5 +69,5 @@ We need to set up three thing before working on our documents:
 
 ## Document Update History
 
-dd June 2026,  New Creation<br>
+DD June 2026,  New Creation<br>
 

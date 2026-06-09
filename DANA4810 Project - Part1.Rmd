@@ -1,0 +1,296 @@
+---
+title: "DANA 4810 Project Part 1"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Course: DANA 4810**
+
+**Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
+
+## Instruction Manual: Using R and Python in a Single jupyter Notebook
+
+
+## 1. Introduction
+
+In today's world of analytics,professionals often need to use both R and Python to benefit the unique strengths of both languages.R excels in statistical models and graphics(with ggplot2 library).Whereas python is known as the industry standard for general-purpose programming, big data and machine learning.
+
+Traditionally, our company has used R through RStudio. However, in the future, it is becoming important to use a platform which supports both R and python Programs in one place.This manual provides thorough information on how to install and use jupyter notebook,how to run both python and r code within a single notebook file.This guide is applicable to both windows and mac users.It is written for beginners and is clear,simple to understand and assumes no previous knowledge of python.
+
+## What is Jupyter Notebook?
+
+Jupyter Notebook is an interactive computational environment that facilitates writing code, executing programs, presenting output, and annotating all these aspects within one single document. Being compatible with several programming languages such as Python and R, it becomes an excellent tool for data analysis tasks.
+
+
+## 2. Setting Up the Environment
+
+The easiest way to use jupyter notebook is through anaconda to run python and r program. It comes with conda, a package manager that makes handling environment easy. 
+
+## Step 1: Installing Anaconda
+
+## Windows setup
+
+1.Download the Anaconda Individual Edition installer for windows from ([anaconda.com](https://www.anaconda.com)).
+
+2.Run the .exe installer.
+
+3.Choose Just Me as recommended and select the default installation path.
+
+4.Note: Under "Advanced Installation Options", leave "Add Anaconda to my PATH environment variable" unchecked. Just use the 'Anaconda Prompt' from the start menu to run commands.
+
+5.Click 'Install, then click 'Finish' once complete. 
+
+**Steps to open jupyter notebook for windows**
+
+1. Open start menu and select Anaconda Navigator.
+2. Select Jupyter notebook -> launch
+3. Jupyter notebook will open in browser.
+4. click new and select python 3 and can start writing code.
+
+
+
+### macOS setup 
+
+1.Download Anaconda
+Open Safari or any web browser.Go to: https://www.anaconda.com/download
+Visit the Anaconda download page.
+
+2.Select macOS.
+
+3.Download the installer appropriate for your Mac:
+Apple Silicon (M1, M2, M3, M4)
+Intel Processor
+
+4.Open the downloaded .pkg file.
+
+5.Follow the installation wizard and complete the installation. 
+
+6.Once completed, open the Terminal app from Finder (Applications > Utilities > Terminal).
+
+Note: Recent macOS.pkg installers install Anaconda in the/opt directory and may need admin authorisation during installation.
+
+
+**Steps to open jupyter notebook for MacOs**
+
+1. Open 'anaconda navigator' from applications.
+2. Click jupyter notebook and then launch.
+3. Select 'new' from upper right corner.
+4. Select python 3 and it is ready for running codes.
+
+## Step 2: Create a Joint Conda Environment
+Creating an isolated virtual environment prevents library version conflicts. We will create an environment named dana_env including Python, R and Jupyter package,
+
+1. Open 'Anaconda Prompt'on Windows or Terminal on macOS.
+
+2. To create your environment run this command:
+   bash
+   conda create -n dana_env python=3.10 r-base r-essentials -c conda-forge -y
+
+Note: r-essentials installs R, the IRkernel (allowing Jupyter to run R), and over 200 popular R packages (such as ggplot2 and dplyr).
+
+3. Activate the new environment:
+  bash
+   conda activate dana_env
+
+## 3. Creating seperate notebooks for each langauge
+
+In jupyter dashboard you can create a notebook in either R or python based upon your needs.
+
+**Creating Notebook for only R program**
+
+1. Firstly run this command in RStudio 
+
+install.packages("IRkernel")
+IRkernel::installspec()
+
+
+
+    This code will help us install **IRkernel** which act as R engine and makes it      possible to run r code in jupyter notebook.
+    
+2. Then in the upper right corner click **New** and select **python3** from the options.
+
+3. A page will be opened for you where you can run any R code.
+
+4. Then run this code in jupyter notebook.
+
+          import sys
+          !{sys.executable} -m pip install rpy2
+          
+   In a second cell run this: 
+   
+          import os
+          import sys
+
+        # 1. Automatically fix paths for Windows users
+        if sys.platform == 'win32':
+            # Tells Python where your R folder is located
+            os.environ['R_HOME'] = r'C:\Program Files\R\R-4.5.2'
+            
+            # Tells Windows where R's internal system files (.dll files) are hidden
+            os.add_dll_directory(r'C:\Program Files\R\R-4.5.2\bin\x64')
+            os.environ['PATH'] = r'C:\Program Files\R\R-4.5.2\bin\x64;' + os.environ['PATH']
+        
+        # 2. Automatically fix paths for Mac users
+        elif sys.platform == 'darwin':
+            # Mac usually connects automatically, but if it fails, remove the '#' below:
+            # os.environ['R_HOME'] = '/Library/Frameworks/R.framework/Resources'
+            pass
+        
+        print("System Check: Environment successfully configured for:", sys.platform)
+
+5. With all these changes we are all setup and ready to work.
+
+**Creating Notebook for only python program**
+
+1. Again click **New** in the upper right corner.
+
+2. Select **Python 3(ipykernel)**
+
+3. Lastly just try running python code to test if it works properly or not:
+
+        a="Hello World!"
+        print(a)
+        
+        
+        
+## 4. Creating single notebook for both langauges
+
+For running both languages in single jupyter notebook we will use python kernel as the base and will run R commands using **rpy2 library**.
+
+**Step1: Loading R magic in jupyter notebook.**
+
+In order to run any R command in python we always first need create a python notebook and then loading R magic extension at the very beginning.
+
+To load the extension always use:
+
+      %load_ext rpy2.ipython
+      
+**Step 2: how to run R commands in jupyter cells**
+
+Now for running R command in cells we have two things to always remember:
+
+a) Single-Line R Commands(%R): If you want to run single line R code use '%R'. For example:
+
+        %R print("Hello World")
+        
+b) Multi-Line R Cells (%%R): If you want to run multi-line R code then always use '%%R'. For example:
+
+        %%R
+        a<-c(15,16,19,155,40)
+        mean_value=mean(a)
+        print(mean_value)
+        
+**Step 3: Final step is sharing data between r and python**
+
+You can pass variables between both languages using (-i) input and (-o) output flags.
+
+**a) Converting Python to R(-i):**
+
+Here **(-i) is import from Python to R**. we use this when we create program/variable in python and may want to use that variable in R.
+
+Let's understand this with example:
+
+        #python code:
+        age=[20,15,19,67,98,34,65,78,59,90]
+        print(age)
+        #next cell(R code):
+        %%R-i age
+        summary(age)
+        
+**b) Converting R to Python(-o):**
+
+Here (-o) means Output from R into python.we use this when we create variable in R and may use that in Python cell.
+
+Understanding with an example:
+
+      # R-code
+      %%R -o marks
+      marks<-c(10,65,78,45,34,43,23,69,70)
+      # running command in python cell using -o
+      import numpy as np
+      print("Mean:", np.mean(numbers))
+      print("Min:", np.min(numbers))
+      print("Max:", np.max(numbers))
+      
+      
+## Case Study: Linear regression in single notebook 
+
+For this we will do linear regression using marketing dataset from datarium package in R.
+
+**Step 1: Loading dataset into python from github url**
+
+The dataset has 200 records for advertising budget of youtube,facebook,newspaper.
+
+        import pandas as pd
+      url = "https://raw.githubusercontent.com/rwepa/DataDemo/master/marketing.csv"
+      df_data = pd.read_csv(url)
+      print(df_data.head())
+      
+**Step 2: Fitting simple linear regression model in R**
+
+        #loading extension-
+        %load_ext rpy2.ipython
+        #importing data from python to R 
+        %%R-i df_data
+        fit <- lm(sales ~ youtube, data = df_data)
+        print(summary(fit))
+        
+## References and sources:
+
+1.Anaconda, Inc. (n.d.). *Anaconda Distribution*. https://www.anaconda.com
+
+2.AlvinNTNU. (n.d.). *Magic R in Python (Google Colab Notebook)*. https://colab.research.google.com/github/alvinntnu/python-notes/blob/master/python-basics/magic-r.ipynb
+
+3.IRkernel Team. (n.d.). *IRkernel: R kernel for Jupyter*. https://irkernel.github.io
+
+4.KDnuggets. (2019). *Running R and Python in Jupyter*. https://www.kdnuggets.com/2019/02/running-r-and-python-in-jupyter.html
+
+5.Project Jupyter. (n.d.). *Jupyter Notebook Documentation*. https://jupyter.org
+
+6.rpy2 Developers. (n.d.). *rpy2: R in Python*. https://rpy2.github.io
+
+7.RWEPA. (n.d.). *Marketing dataset (GitHub repository)*. https://github.com/rwepa/DataDemo/blob/master/marketing.csv
+
+8.Stack Overflow. (n.d.). *R and Python in one Jupyter Notebook*. https://stackoverflow.com/questions/39008069/r-and-python-in-one-jupyter-notebook
+
+
+
+
+
+
+
+        
+
+        
+
+        
+        
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+

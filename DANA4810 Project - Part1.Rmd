@@ -97,7 +97,7 @@ knitr::include_graphics("04_AnacondaPrompt_2.png")
 ```
 
 
-## 3. Creating a Seperate Notebook for Each Langauge
+## 3. Creating a Separate Notebook for Each Language
 In Jupyter dashboard, you can create a notebook in either Python or R based upon your needs.
 
 **[How to Create a Notebook for only R program]**
@@ -173,7 +173,7 @@ knitr::include_graphics("08_HelloWorldFromP.png")
 ```
         
 
-## 4. Creating Single Notebook for Both Langauges
+## 4. Creating Single Notebook for Both Languages
 For running both languages in single Jupyter Notebook, we will use Python kernel as the base and will run R commands using **rpy2 library**.
 
 ### Step 1: Loading R magic in Jupyter Notebook
@@ -224,9 +224,9 @@ Here (-o) means Output from R into Python. we use this when we create variable i
       
     # Running command in Python cell using -o
     import numpy as np
-    print("Mean:", np.mean(numbers))
-    print("Min:", np.min(numbers))
-    print("Max:", np.max(numbers))
+    print("Mean:", np.mean(marks))
+    print("Min:", np.min(marks))
+    print("Max:", np.max(marks))
       
       
 ## 5. Case Study: Linear Regression in Single Notebook

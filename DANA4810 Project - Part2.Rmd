@@ -44,32 +44,32 @@ We need to set up three thing before working on our documents:
 ## 3. Basic Operation for Daily Use
 
 1.Open RStudio<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("31_OpenProject.png")
 ```
 
 2.Select a Project<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="30%", fig.align="left"}
 knitr::include_graphics("32_SelectProject.png")
 ```
 
 3.Pull the latest files from GitHub<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("33_Pull.png")
 ```
 
 4.Modify and Save files locally<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("34_Modify&Save.png")
 ```
 
 5.Commit your changes with a clear comment<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("35_Commit.png")
 ```
 
 6.Push your commits to Github<br>
-```{r, echo=FALSE, out.width="50%", fig.align="center"}
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("36_Push.png")
 ```
 

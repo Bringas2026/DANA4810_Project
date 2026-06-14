@@ -129,6 +129,8 @@ return the file to the last committed version.
 ```
 git checkout -- filename.Rmd
 
+```
+
 
 4.How to restore from a Past Commit (Local)<br>
 
@@ -150,6 +152,9 @@ git checkout a3f9c12 -- filename.Rmd
 ```
 git add filename.Rmd
 git commit -m "Restore filename.Rmd to version from [date]"
+
+```
+
 
 5.How to restore from a Github<br>
 

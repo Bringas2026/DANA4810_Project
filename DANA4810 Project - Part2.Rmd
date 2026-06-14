@@ -1,6 +1,8 @@
 ---
 title: "DANA 4810 Project Part 2"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 date: "2026-06-03"
 ---
 
@@ -15,12 +17,12 @@ knitr::opts_chunk$set(echo = TRUE)
 # Instruction Manual
 ## Github over Google docs for documenatiton
 
-## 1. Introduction
+### 1. Introduction
 Imagine you are delivering a final presentation for the company with your teammates, and everybody is using Google Docs or Word, sending emails back and forth after each change. It is the final day, and people rushing to finish on time are overwriting each other's work, with no way to know who changed what. In the end, you lose time, nerves, and the quality of the work suffers as well.
 
 GitHub solves these problems by giving every team member their own local copy of the files, tracking every change with a timestamp and author name, and allowing the team to merge contributions without overwriting each other's work.
 
-## 2. Getting Started
+### 2. Getting Started
 
 We need to set up three thing before working on our documents:
 1.Install Git<br>
@@ -41,7 +43,7 @@ We need to set up three thing before working on our documents:
 
 ```
 
-## 3. Basic Operation for Daily Use
+### 3. Basic Operation for Daily Use
 
 1.Open RStudio<br>
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
@@ -77,10 +79,41 @@ knitr::include_graphics("36_Push.png")
 
 ```
 
-## 4. Version Control
+### 4. Version Control
+
+Version Control is a good practice that manages changes files over time. It acts like digital audit trails, allowing you to see exactly who made what changes, when and allows to revert to previous states if mistake occurs.
 
 1.How to make a version<br>
+
+**Steps to create a commit in RStudio:**
+1. Make and save your changes to the `.Rmd` file as normal.
+2. In RStudio, open the Git tab (top-right panel).
+3. Check the box next to each file you changed — this stages the file.
+4. Click Commit.
+5. In the box that appears, type a short message describing what you did.
+6. Click Commit to confirm.
+
+> A good commit message answers the question: *"What did this change do?"* — not just
+> *"I changed something."*
+
 2.How to check a history and differences<br>
+
+**In RStudio:**
+
+- Click the **clock icon** in the Git tab to open the commit history for your project.
+- Each row shows the commit message, the author's name, and the date.
+- Click any commit to see a **diff** (a colour-coded comparison):
+  - 🟢 **Green lines** = content that was added
+  - 🔴 **Red lines** = content that was removed
+
+**On GitHub.com:**
+
+1. Open your repository on GitHub.
+2. Click **Commits** (near the top of the file list) to see the full history.
+3. Click any commit to see exactly which lines were added or removed in every file.
+4. To see who wrote each specific line of a file, open the file and click **Blame** (top-right).
+   GitHub will annotate every line with the author and the date it was last changed.
+   
 3.How to restore from a Local Changes (Before Commit) / staging area<br>
 4.How to restore from a Past Commit (Local)<br>
 5.Hot to restore from a Github<br>
@@ -90,9 +123,20 @@ knitr::include_graphics("36_Push.png")
 
 ```
 
-## 5. Tips
+### 5. Best Practices for Collaboration
 
 1.Do's & Don'ts (Best Practices for Collaboration)<br>
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| Pull the latest changes from github before starting the work | Start editing without pulling an you will be risking everyone project with that action |
+| Commit with understandable, focus and small changes | Make one giant commit at the end of the day |
+| Write a clear commit message for every commit | Use vague messages like "updates" or "changes" |
+| Work on your own own branch for each task | Commit directly to 'main' |
+| Open a Pull Request and have a teammate review before merging | Merge your own work without a review |
+| Talk to the team before making any huge change | Not talking to anyone before a huge change on the project |
+| Use descriptive branch names: 'feature/add-graphics', 'fix/introduction' | Use vague branch names like 'test', 'new', or 'edits' |
+
 2.Common Errors & How to resolve Conflicts<br>
 
 ```{r}
@@ -101,6 +145,8 @@ knitr::include_graphics("36_Push.png")
 
 ## References and Sources
 
+1. https://rainsworth.github.io/intro-to-github/06_Collaboration.html
+2.https://earthdatascience.org/courses/intro-to-earth-data-science/git-github/github-collaboration/github-for-collaboration-open-science-workflow/
 
 ## Document Update History
 

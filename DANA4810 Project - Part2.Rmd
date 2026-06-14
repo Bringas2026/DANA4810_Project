@@ -86,12 +86,12 @@ Version Control is a good practice that manages changes files over time. It acts
 1.How to make a version<br>
 
 **Steps to create a commit in RStudio:**
-1. Make and save your changes to the `.Rmd` file as normal.
-2. In RStudio, open the Git tab (top-right panel).
-3. Check the box next to each file you changed — this stages the file.
-4. Click Commit.
-5. In the box that appears, type a short message describing what you did.
-6. Click Commit to confirm.
+a. Make and save your changes to the `.Rmd` file as normal.
+b. In RStudio, open the Git tab (top-right panel).
+c. Check the box next to each file you changed — this stages the file.
+d. Click Commit.
+e. In the box that appears, type a short message describing what you did.
+f. Click Commit to confirm.
 
 > A good commit message answers the question: *"What did this change do?"* — not just
 > *"I changed something."*
@@ -103,8 +103,8 @@ Version Control is a good practice that manages changes files over time. It acts
 - Click the **clock icon** in the Git tab to open the commit history for your project.
 - Each row shows the commit message, the author's name, and the date.
 - Click any commit to see a **diff** (a colour-coded comparison):
-  - 🟢 **Green lines** = content that was added
-  - 🔴 **Red lines** = content that was removed
+  -  **Green lines** = content that was added
+  -  **Red lines** = content that was removed
 
 **On GitHub.com:**
 
@@ -115,8 +115,46 @@ Version Control is a good practice that manages changes files over time. It acts
    GitHub will annotate every line with the author and the date it was last changed.
    
 3.How to restore from a Local Changes (Before Commit) / staging area<br>
+
+If you have edited a file but have not yet committed, you can discard your local changes and
+return the file to the last committed version.
+
+**In RStudio:**
+
+1. In the **Git** tab, right-click the file you want to restore.
+2. Select **Revert...** and confirm.
+
+**In the terminal:**
+
+```
+git checkout -- filename.Rmd
+
+
 4.How to restore from a Past Commit (Local)<br>
-5.Hot to restore from a Github<br>
+
+If you have already committed a change but want to go back to an earlier version of a specific
+file, you can restore it using the commit's unique ID (called a **hash**).
+
+**Steps:**
+
+1. Open the **Git** tab in RStudio and click the clock icon to view history.
+2. Find the commit you want to restore and copy its short hash (e.g., `a3f9c12`).
+3. In the RStudio terminal, run:
+
+```
+git checkout a3f9c12 -- filename.Rmd
+
+```
+4. Stage it and commit again:
+
+```
+git add filename.Rmd
+git commit -m "Restore filename.Rmd to version from [date]"
+
+5.How to restore from a Github<br>
+
+
+
 6.How to communicate with team members<br>
 
 ```{r}
@@ -146,7 +184,9 @@ Version Control is a good practice that manages changes files over time. It acts
 ## References and Sources
 
 1. https://rainsworth.github.io/intro-to-github/06_Collaboration.html
-2.https://earthdatascience.org/courses/intro-to-earth-data-science/git-github/github-collaboration/github-for-collaboration-open-science-workflow/
+2. https://earthdatascience.org/courses/intro-to-earth-data-science/git-github/github-collaboration/github-for-collaboration-open-science-workflow/
+3. https://gitprotect.io/blog/git-revert-file-to-previous-commit/
+4. https://gitprotect.io/blog/git-revert-file-to-previous-commit/
 
 ## Document Update History
 

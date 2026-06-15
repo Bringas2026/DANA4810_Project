@@ -24,32 +24,77 @@ GitHub solves these problems by giving every team member their own local copy of
 
 
 ### 2. Getting Started
-
-We need to set up three thing before working on our documents:<br>
+Setting up your environment is the first step toward collaborating on GitHub. Unlike Google Docs, where you can simply click a URL and start typing, Git requires a one-time setup to create a secure bridge between your local machine (RStudio) and the cloud (GitHub).
 
 #### 2.1 Install Git<br>
+Git operates quietly in the background of your operating system. Once installed, it enables the "Git tab" inside RStudio, providing you with the necessary interface to log and manage your changes.<br>
+
+Official Download URL: https://git-scm.com/downloads
+```{r, echo=FALSE, out.width="50%", fig.align="left"}
+knitr::include_graphics("21_InstallGit.png")
+```
+
+  **[For Windows users]**<br>
+  
+  - Click on "Windows," and download the standalone installer.<br>
+  - During the setup wizard, you can safely keep the default options recommended by the installer.
+
+  **[For Mac/macOS users]**<br>
+  
+  - While you can use the installer from the official website, it is highly recommended to install Git via Homebrew by running the following command in your Terminal:
+    ```
+    brew install git
+    ```
+
 #### 2.2 Create a Github Account<br>
+Just as you need a Google account to access a shared Google Doc, you need a GitHub account to access the team's cloud workspace. Once created, share your username with your project manager so they can grant you access to the repository.
+
 #### 2.3 Connect RStudio to Github<br>
+This setup creates a direct link between the team's cloud repository and your PC. Once completed, your RStudio environment will be fully synchronized with GitHub and ready for using the "Pull" and "Push" buttons inside RStudio.
+
+**Steps to connect RStudio to Github:**<br>
+
+a. Select "New Project" from the Project menu (top-right corner or via File > New Project) in RStudio.<br>
+b. Select "Version Control" from the project creation wizard window.<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("23_VersionControl.png")
+```
+c. Select "Git" as your version control software.<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("23_Git.png")
+```
+d. Copy the Repository URL from the GitHub project page (if you do not have it, request the URL from your project manager).<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("23_CopyURL.png")
+```
+e. Paste the copied URL into the "Repository URL" text box back in RStudio. Then, click the "Create Project" button.<br>
+    Note: The "Project directory name" field will automatically populate based on the repository name).<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("23_Repo.png")
+```
+
+f. Confirm the workspace transition: RStudio will automatically refresh and open the new environment. Verify that the "Git" tab is now visible in your Environment pane.<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("23_NewProject.png")
+```
+
+
 #### 2.4 Setup Up Account Information & Credentials<br>
 To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.
   
   How to do that:<br>
   
   1. Set your Github Username
-```
-git config --global user.name "Your GitHub Username"
-```
+  ```
+  git config --global user.name "Your GitHub Username"
+  ```
   2. Set your Github Email Address
-```
-git config --global user.email "Your GitHub Email Address"
-```
+  ```
+  git config --global user.email "Your GitHub Email Address"
+  ```
   Note:<br>
   - Make sure to use the exact same email address you used to create your Github account.<br>
   - This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)<br>
-
-```{r}
-
-```
 
 
 ### 3. Basic Operation for Daily Use
@@ -102,10 +147,6 @@ knitr::include_graphics("35_Commit.png")
 #### 3.6 Push your commits to Github
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("36_Push.png")
-```
-
-```{r}
-
 ```
 
 
@@ -203,6 +244,7 @@ This will automatically download any commits made on Github and merge them with 
 
 #### 4.6 How to communicate with team members
 
+<<<<<<< HEAD
 **Commit messages as communication:**
 
 Every commit message is visible to the whole team in the history. Writing clear messages
@@ -212,6 +254,8 @@ means your teammates always know what you were working on without having to ask.
 
 ```
 
+=======
+>>>>>>> 4a01c6e40422fa653d0572728deeef8f3726c90e
 
 ### 5. Best Practices for Collaboration
 
@@ -229,10 +273,6 @@ means your teammates always know what you were working on without having to ask.
 
 #### 5.2 Common Errors & How to resolve Conflicts:
 
-
-```{r}
-
-```
 
 ## References and Sources
 

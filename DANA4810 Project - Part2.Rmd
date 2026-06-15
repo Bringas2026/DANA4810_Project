@@ -1,8 +1,8 @@
 ---
 title: "DANA 4810 Project Part 2"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 date: "2026-06-03"
 ---
 
@@ -22,55 +22,66 @@ Imagine you are delivering a final presentation for the company with your teamma
 
 GitHub solves these problems by giving every team member their own local copy of the files, tracking every change with a timestamp and author name, and allowing the team to merge contributions without overwriting each other's work.
 
+
 ### 2. Getting Started
 
-We need to set up three thing before working on our documents:
-1.Install Git<br>
-2.Create a Github Account<br>
-3.Connect RStudio to Github<br>
-4.Setup Up Account Information & Credentials<br>
-  To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.
-  How to do that:
-  1.Set your Github Username
-    git config --global user.name "Your GitHub Username"
-  2.Set your Github Email Address
-    git config --global user.email "Your GitHub Email Address"
-    Note:
-    - Make sure to use the exact same email address you used to create your Github account.
-    - This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)
+We need to set up three thing before working on our documents:<br>
+
+#### 2.1 Install Git<br>
+#### 2.2 Create a Github Account<br>
+#### 2.3 Connect RStudio to Github<br>
+#### 2.4 Setup Up Account Information & Credentials<br>
+To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.
+  
+  How to do that:<br>
+  
+  1. Set your Github Username
+```
+git config --global user.name "Your GitHub Username"
+```
+  2. Set your Github Email Address
+```
+git config --global user.email "Your GitHub Email Address"
+```
+  Note:<br>
+  - Make sure to use the exact same email address you used to create your Github account.<br>
+  - This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)<br>
 
 ```{r}
 
 ```
 
+
 ### 3. Basic Operation for Daily Use
 
-1.Open RStudio<br>
+#### 3.1 Open RStudio
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("31_OpenProject.png")
 ```
 
-2.Select a Project<br>
+#### 3.2 Select a Project
 ```{r, echo=FALSE, out.width="30%", fig.align="left"}
 knitr::include_graphics("32_SelectProject.png")
 ```
 
-3.Pull the latest files from GitHub<br>
+#### 3.3 Pull the latest files from GitHub
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("33_Pull.png")
 ```
 
-4.Modify and Save files locally<br>
+#### 3.4 Modify and Save files locally
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("34_Modify&Save.png")
 ```
 
-5.Commit your changes with a clear comment<br>
+#### 3.5 Commit your changes with a clear comment
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("35_Commit.png")
 ```
+  Note:<br>
+  - When making your first commit, RStudio may prompt you to enter your username and email address. If this occurs, please follow the steps in "2.4 Setup Up Account Information & Credentials" to complete the configuration.
 
-6.Push your commits to Github<br>
+#### 3.6 Push your commits to Github
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("36_Push.png")
 ```
@@ -79,75 +90,82 @@ knitr::include_graphics("36_Push.png")
 
 ```
 
+
 ### 4. Version Control
 
-Version Control is a good practice that manages changes files over time. It acts like digital audit trails, allowing you to see exactly who made what changes, when and allows to revert to previous states if mistake occurs.
+Version Control is a good practice that manages changes files over time. It acts like digital audit trails, allowing you to see exactly who made what changes, when and allows to revert to previous states if mistake occurs. While Google Docs automatically saves your work with every single keystroke, GitHub records a "version" (snapshot) only when a user intentionally creates a "Commit."
 
-1.How to make a version<br>
+#### 4.1 How to make a version
+**Steps to create a commit in RStudio:**<br>
 
-**Steps to create a commit in RStudio:**
-a. Make and save your changes to the `.Rmd` file as normal.
-b. In RStudio, open the Git tab (top-right panel).
-c. Check the box next to each file you changed — this stages the file.
-d. Click Commit.
-e. In the box that appears, type a short message describing what you did.
-f. Click Commit to confirm.
+a. Make and save your changes to the `.Rmd` file as normal.<br>
+b. In RStudio, open the Git tab (top-right panel).<br>
+c. Check the box next to each file you changed — this stages the file.<br>
+d. Click Commit.<br>
+e. In the box that appears, type a short message describing what you did.<br>
+f. Click Commit to confirm.<br>
 
 > A good commit message answers the question: *"What did this change do?"* — not just
 > *"I changed something."*
 
-2.How to check a history and differences<br>
-
-**In RStudio:**
+#### 4.2 How to check a history and differences
+**In RStudio:**<br>
 
 - Click the **clock icon** in the Git tab to open the commit history for your project.
-- Each row shows the commit message, the author's name, and the date.
-- Click any commit to see a **diff** (a colour-coded comparison):
-  -  **Green lines** = content that was added
-  -  **Red lines** = content that was removed
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
+knitr::include_graphics("42_History.png")
+```
+- Each row shows the commit message, the author's name, and the date.<br>
+- Click any commit to see a **diff** (a colour-coded comparison):<br>
 
-**On GitHub.com:**
+  -  **Green lines** = content that was added<br>
+  -  **Red lines** = content that was removed<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("42_Diff.png")
+```
 
-1. Open your repository on GitHub.
-2. Click **Commits** (near the top of the file list) to see the full history.
-3. Click any commit to see exactly which lines were added or removed in every file.
-4. To see who wrote each specific line of a file, open the file and click **Blame** (top-right).
-   GitHub will annotate every line with the author and the date it was last changed.
+**On GitHub.com:**<br>
+
+1. Open your repository on GitHub.<br>
+2. Click **Commits** (near the top of the file list) to see the full history.<br>
+```{r, echo=FALSE, out.width="70%", fig.align="left"}
+knitr::include_graphics("42_History(GitHub).png")
+```
+3. Click any commit to see exactly which lines were added or removed in every file.<br>
+4. To see who wrote each specific line of a file, open the file and click **Blame** (top-right). GitHub will annotate every line with the author and the date it was last changed.<br>
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
+knitr::include_graphics("42_Diff(GitHub).png")
+```
    
-3.How to restore from a Local Changes (Before Commit) / staging area<br>
+#### 4.3 How to restore from a Local Changes (Before Commit) / staging area
+If you have edited a file but have not yet committed, you can discard your local changes and return the file to the last committed version.<br>
 
-If you have edited a file but have not yet committed, you can discard your local changes and
-return the file to the last committed version.
+**In RStudio:**<br>
 
-**In RStudio:**
+1. In the **Git** tab, right-click the file you want to restore.<br>
+2. Select **Revert...** and confirm.<br>
 
-1. In the **Git** tab, right-click the file you want to restore.
-2. Select **Revert...** and confirm.
-
-**In the terminal:**
+**In the terminal:**<br>
 
 ```
 git checkout -- filename.Rmd
 
 ```
 
+#### 4.4 How to restore from a Past Commit (Local)
+If you have already committed a change but want to go back to an earlier version of a specific file, you can restore it using the commit's unique ID (called a **hash**).<br>
 
-4.How to restore from a Past Commit (Local)<br>
+**Steps:**<br>
 
-If you have already committed a change but want to go back to an earlier version of a specific
-file, you can restore it using the commit's unique ID (called a **hash**).
-
-**Steps:**
-
-1. Open the **Git** tab in RStudio and click the clock icon to view history.
-2. Find the commit you want to restore and copy its short hash (e.g., `a3f9c12`).
-3. In the RStudio terminal, run:
+1. Open the **Git** tab in RStudio and click the clock icon to view history.<br>
+2. Find the commit you want to restore and copy its short hash / SHA (e.g., `a3f9c12`).<br>
+3. In the RStudio terminal, run:<br>
 
 ```
 git checkout a3f9c12 -- filename.Rmd
 
 ```
-4. Stage it and commit again:
+4. Stage it and commit again:<br>
 
 ```
 git add filename.Rmd
@@ -155,32 +173,31 @@ git commit -m "Restore filename.Rmd to version from [date]"
 
 ```
 
+#### 4.5 How to restore from a Github
 
-5.How to restore from a Github<br>
-
-
-
-6.How to communicate with team members<br>
+#### 4.6 How to communicate with team members
 
 ```{r}
 
 ```
 
+
 ### 5. Best Practices for Collaboration
 
-1.Do's & Don'ts (Best Practices for Collaboration)<br>
+#### 5.1 Do's & Don'ts (Best Practices for Collaboration)
 
 | ✅ Do | ❌ Don't |
 |---|---|
 | Pull the latest changes from github before starting the work | Start editing without pulling an you will be risking everyone project with that action |
 | Commit with understandable, focus and small changes | Make one giant commit at the end of the day |
 | Write a clear commit message for every commit | Use vague messages like "updates" or "changes" |
-| Work on your own own branch for each task | Commit directly to 'main' |
+| Work on your own branch for each task | Commit directly to 'main' |
 | Open a Pull Request and have a teammate review before merging | Merge your own work without a review |
 | Talk to the team before making any huge change | Not talking to anyone before a huge change on the project |
 | Use descriptive branch names: 'feature/add-graphics', 'fix/introduction' | Use vague branch names like 'test', 'new', or 'edits' |
 
-2.Common Errors & How to resolve Conflicts<br>
+#### 5.2 Common Errors & How to resolve Conflicts:
+
 
 ```{r}
 

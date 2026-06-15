@@ -1,8 +1,8 @@
 ---
 title: "DANA 4810 Project Part 2"
 output:
-  html_document: default
   word_document: default
+  html_document: default
 date: "2026-06-03"
 ---
 
@@ -193,7 +193,20 @@ git commit -m "Restore filename.Rmd to version from [date]"
 
 #### 4.5 How to restore from a Github
 
+**Option A — Pull the latest version from GitHub (safest):**
+
+```
+git pull origin main
+
+```
+This will automatically download any commits made on Github and merge them with your files.
+
 #### 4.6 How to communicate with team members
+
+**Commit messages as communication:**
+
+Every commit message is visible to the whole team in the history. Writing clear messages
+means your teammates always know what you were working on without having to ask.
 
 ```{r}
 

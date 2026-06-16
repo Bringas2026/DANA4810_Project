@@ -3,7 +3,7 @@ title: "DANA 4810 Project Part 2"
 output:
   html_document: default
   word_document: default
-date: "2026-06-03"
+date: "2026-06-15"
 ---
 
 ```{r setup, include=FALSE}
@@ -12,32 +12,32 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Course: DANA 4810**
 
-**Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
+
 
 # Instruction Manual
 ## Github over Google docs for documenatiton
 
-## Glossary of Key Terms
+### 0. Glossary of Key Terms
 
-Before diving in, here are the key terms you will encounter throughout this guide:
+Before diving in, here are the key terms you will encounter throughout this manual:
 
 | Term |  Meaning |
 |---|---|
+| **Branch** | An independent copy of the project where you can work without affecting the main version |
+| **Commit** | A saved snapshot of your changes, with a message describing what you did |
+| **Diff** | A colour-coded comparison showing what lines were added or removed |
 | **Git** | The version control software installed on your computer that tracks changes |
 | **GitHub** | The website that hosts your project files in the cloud (like Google Drive, but for code) |
-| **Repository (Repo)** | Your project folder — all files, history, and changes live here |
-| **Local** | Files that exist only on your own computer |
-| **Remote** | Files that live on GitHub's servers (the cloud copy) |
-| **Commit** | A saved snapshot of your changes, with a message describing what you did |
-| **Push** | Sending your commits from your computer up to GitHub |
-| **Pull** | Downloading the latest changes from GitHub to your computer |
-| **Branch** | An independent copy of the project where you can work without affecting the main version |
-| **Merge** | Combining changes from one branch into another |
-| **Staging Area** | A holding area where you place files before committing them |
 | **Hash / SHA** | A unique ID code (e.g., `a3f9c12`) assigned to every commit |
-| **Diff** | A colour-coded comparison showing what lines were added or removed |
-| **Origin** | The default name for your remote GitHub repository |
+| **Local** | Files that exist only on your own computer |
 | **Main** | The default name of the primary branch in your repository |
+| **Merge** | Combining changes from one branch into another |
+| **Origin** | The default name for your remote GitHub repository |
+| **Pull** | Downloading the latest changes from GitHub to your computer |
+| **Push** | Sending your commits from your computer up to GitHub |
+| **Remote** | Files that live on GitHub's servers (the cloud copy) |
+| **Repository (Repo)** | Your project folder — all files, history, and changes live here |
+| **Staging Area** | A holding area where you place files before committing them |
 
 ---
 
@@ -78,12 +78,12 @@ This setup creates a direct link between the team's cloud repository and your PC
 
 **Steps to connect RStudio to Github:**<br>
 
-a. Select "New Project" from the Project menu (top-right corner or via File > New Project) in RStudio.<br>
-b. Select "Version Control" from the project creation wizard window.<br>
+a. Select **"New Project"** from the Project menu (top-right corner or via File > New Project) in RStudio.<br>
+b. Select **"Version Control"** from the project creation wizard window.<br>
 ```{r, echo=FALSE, out.width="70%", fig.align="left"}
 knitr::include_graphics("23_VersionControl.png")
 ```
-c. Select "Git" as your version control software.<br>
+c. Select **"Git"** as your version control software.<br>
 ```{r, echo=FALSE, out.width="70%", fig.align="left"}
 knitr::include_graphics("23_Git.png")
 ```
@@ -91,8 +91,7 @@ d. Copy the Repository URL from the GitHub project page (if you do not have it, 
 ```{r, echo=FALSE, out.width="70%", fig.align="left"}
 knitr::include_graphics("23_CopyURL.png")
 ```
-e. Paste the copied URL into the "Repository URL" text box back in RStudio. Then, click the "Create Project" button.<br>
-    Note: The "Project directory name" field will automatically populate based on the repository name).<br>
+e. Paste the copied URL into the **"Repository URL"** text box back in RStudio. Then, click the "Create Project" button. The "Project directory name" field will automatically populate based on the repository name.<br>
 ```{r, echo=FALSE, out.width="70%", fig.align="left"}
 knitr::include_graphics("23_Repo.png")
 ```
@@ -104,7 +103,7 @@ knitr::include_graphics("23_NewProject.png")
 
 
 #### 2.4 Setup Up Account Information & Credentials<br>
-To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.<br>
+To make sure that each team member's name shows up in Github after pushing, which is quite important to track update history: who made this change, RStudio needs to be linked to appropriate Github account.<br>
  ✅ Make sure to use the exact same email address you used to create your Github account.<br>
  ✅ This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)<br>
 
@@ -123,60 +122,62 @@ To make sure that each team member's name shows up in Github after pushing, RStu
 
 ### 3. Basic Operation for Daily Use
 
-**The Golden Rule of GitHub — always follow this order every single day:**
+**As a Golden Rule of GitHub, always follow this order every single day**
 
-```
-PULL  →  EDIT  →  STAGE  →  COMMIT  →  PUSH
-```
-> Skip "Pull" at the start and you risk creating conflicts with your teammates' work.
+> [PULL]  →  [EDIT]  →  [STAGE]  →  [COMMIT]  →  [PUSH]
+
+✅ Skip "Pull" at the start and you risk creating conflicts with your teammates' work.
 
 ---
 **As a Key Concept, there are three Git Environments: Local, Staging, and GitHub**<br>
 To collaborate effectively, it is essential to understand that Git manages your work across three separate stages, which is a major shift from the automatic, single-layer syncing of Google Docs:
 
-**1. Local Environment:**
+  1. **Local Environment**:<br>
+  Your local machine where you open RStudio and edit code. Saving files here affects your local disk only, ensuring a safe sandbox where you can test or break code without impacting others.
 
-Your local machine where you open RStudio and edit code. Saving files here affects your local disk only, ensuring a safe sandbox where you can test or break code without impacting others.
+  2. **Staging Area**:<br>
+  A critical intermediary stage. When you create a "Commit," the files currently in the Staging Area are recorded directly into your Local Repository (your PC's history log). It is crucial to note that committing does NOT send your changes to GitHub yet; your work remains strictly on your local machine until you "Push."
 
-**2. Staging Area:**
-
-A critical intermediary stage. When you create a "Commit," the files currently in the Staging Area are recorded directly into your Local Repository (your PC's history log). It is crucial to note that committing does NOT send your changes to GitHub yet; your work remains strictly on your local machine until you "Push."
-
-**3. GitHub (Remote Repository):**
-
-The shared cloud infrastructure. Once your staged files are committed, hitting "Push" transfers those snapshots to GitHub, updating the team's official master copy.
+  3. **GitHub (Remote Repository)**:<br>
+  The shared cloud infrastructure. Once your staged files are committed, hitting "Push" transfers those snapshots to GitHub, updating the team's official master copy.
 
 Note: The Purpose of Staging<br>
 The Staging Area acts as a filter. Instead of throwing all ongoing modifications into the cloud at once, it allows you to selectively package and comment on your changes step-by-step. This structural control is what gives Git its superior version tracking capabilities compared to traditional word processors.
 
 #### 3.1 Open RStudio
+Launch the RStudio application on your local machine to begin your workspace.
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("31_OpenProject.png")
 ```
 
 #### 3.2 Select a Project
+Open your team's designated collaborative project by selecting the corresponding <code>.Rproj</code> file from the project menu.</p>
 ```{r, echo=FALSE, out.width="30%", fig.align="left"}
 knitr::include_graphics("32_SelectProject.png")
 ```
 
-#### 3.3 Pull the latest files from GitHub
+#### 3.3 Pull the latest files from GitHub [PULL]
+Navigate to the Git tab and click the **"Pull"** button to synchronize your local environment with the latest changes made by your team on GitHub.
+Always do this before you start writing any code to prevent future conflicts.
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("33_Pull.png")
 ```
 
-#### 3.4 Modify and Save files locally
+#### 3.4 Modify and Save files locally [EDIT]
+After completing your edits in files, save your progress locally by pressing <code>Ctrl+S</code> (Windows) or <code>Cmd+S</code> (Mac).</p>
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("34_Modify&Save.png")
 ```
 
-#### 3.5 Commit your changes with a clear comment
+#### 3.5 Commit your changes with a clear comment [STAGE&COMMIT]
+Check the **"Staged"** box next to the modified files in the Git tab, click **"Commit"**, and log a concise, descriptive **Commit message** explaining your updates.
+Note: When making your first commit, RStudio may prompt you to enter your username and email address. If this occurs, please follow the steps in "2.4 Setup Up Account Information & Credentials" to complete the configuration.
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("35_Commit.png")
 ```
-  Note:<br>
-  - When making your first commit, RStudio may prompt you to enter your username and email address. If this occurs, please follow the steps in "2.4 Setup Up Account Information & Credentials" to complete the configuration.
 
-#### 3.6 Push your commits to Github
+#### 3.6 Push your commits to Github [PUSH]
+Click the **"Push"** button to upload your recorded local snapshots to the shared GitHub repository, making your contributions visible to the entire team. You may find the **"Push"** button on the previous Commit screen named "Review Changes". Both works in the same way.
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("36_Push.png")
 ```
@@ -187,19 +188,23 @@ knitr::include_graphics("36_Push.png")
 Version Control is a good practice that manages changes files over time. It acts like digital audit trails, allowing you to see exactly who made what changes, when and allows to revert to previous states if mistake occurs. While Google Docs automatically saves your work with every single keystroke, GitHub records a "version" (snapshot) only when a user intentionally creates a "Commit."
 
 #### 4.1 How to make a version
+As a brief recap from Section 3, your changes are only safely logged as a official "version" once you complete both the Commit and Push operations. Remember, clicking "Commit" records the snapshot to your local history, and clicking "Push" uploads it to GitHub to make it permanent for the team.
+
 **Steps to create a commit in RStudio:**<br>
 
-a. Make and save your changes to the `.Rmd` file as normal.<br>
+a. Make and save your changes to the files as normal.<br>
 b. In RStudio, open the Git tab (top-right panel).<br>
 c. Check the box next to each file you changed — this stages the file.<br>
 d. Click Commit.<br>
-e. In the box that appears, type a short message describing what you did.<br>
+e. In the box that appears, type a short commit message describing what you did.<br>
 f. Click Commit to confirm.<br>
 
-> A good commit message answers the question: *"What did this change do?"* — not just *"I changed something."*
+✅ A good commit message answers the question: *"What did this change do?"* — not just *"I changed something."*
 
 
 #### 4.2 How to check a history and differences
+You can review your project's commit history either directly inside **RStudio** or via the **GitHub Web interface**, depending on your needs. Use the <em>RStudio Git History</em> for a quick check on your local incremental changes and code differences (Diff) while working. For a comprehensive, visual overview of all team activities, timeline tracking, and repository-wide updates, reviewing the history on the <em>GitHub Web interface</em> is highly recommended.
+
 **In RStudio:**<br>
 
 - Click the **clock icon** in the Git tab to open the commit history for your project.
@@ -223,7 +228,7 @@ knitr::include_graphics("42_Diff.png")
 knitr::include_graphics("42_History(GitHub).png")
 ```
 3. Click any commit to see exactly which lines were added or removed in every file.<br>
-4. To see who wrote each specific line of a file, open the file and click **Blame** (top-right). GitHub will annotate every line with the author and the date it was last changed.<br>
+4. To see who wrote each specific line of a file, open the file and click **Blame**. GitHub will annotate every line with the author and the date it was last changed.<br>
 ```{r, echo=FALSE, out.width="80%", fig.align="left"}
 knitr::include_graphics("42_Diff(GitHub).png")
 ```
@@ -343,6 +348,10 @@ A **branch** is an independent copy of the project where you can work freely wit
 ! [rejected] main -> main (fetch first)
 error: failed to push some refs to 'https://github.com/...'
 ```
+```{r, echo=FALSE, out.width="80%", fig.align="left"}
+knitr::include_graphics("52_PushRejection.png")
+```
+
 
 **What it means:** Someone else pushed changes to GitHub while you were working. Your local version is now behind the remote version.
 

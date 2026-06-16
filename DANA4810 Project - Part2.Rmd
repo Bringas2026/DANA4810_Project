@@ -1,8 +1,8 @@
 ---
 title: "DANA 4810 Project Part 2"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 date: "2026-06-03"
 ---
 
@@ -80,8 +80,11 @@ knitr::include_graphics("23_NewProject.png")
 
 
 #### 2.4 Setup Up Account Information & Credentials<br>
-To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.
-  
+To make sure that each team member's name shows up in Github after pushing, RStudio needs to be linked to appropriate Github account.<br>
+ ✅ Make sure to use the exact same email address you used to create your Github account.<br>
+ ✅ This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)<br>
+
+
   How to do that:<br>
   
   1. Set your Github Username
@@ -92,9 +95,6 @@ To make sure that each team member's name shows up in Github after pushing, RStu
   ```
   git config --global user.email "Your GitHub Email Address"
   ```
-  Note:<br>
-  - Make sure to use the exact same email address you used to create your Github account.<br>
-  - This will be reflected only your future updates. Past updates cannot be cahnged (although your updates themselves should be safely pushed.)<br>
 
 
 ### 3. Basic Operation for Daily Use

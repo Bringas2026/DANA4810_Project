@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Course: DANA 4810**
 
-
+**Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
 
 # Instruction Manual
 ## Github over Google docs for documenatiton

@@ -17,6 +17,30 @@ knitr::opts_chunk$set(echo = TRUE)
 # Instruction Manual
 ## Github over Google docs for documenatiton
 
+## Glossary of Key Terms
+
+Before diving in, here are the key terms you will encounter throughout this guide:
+
+| Term |  Meaning |
+|---|---|
+| **Git** | The version control software installed on your computer that tracks changes |
+| **GitHub** | The website that hosts your project files in the cloud (like Google Drive, but for code) |
+| **Repository (Repo)** | Your project folder — all files, history, and changes live here |
+| **Local** | Files that exist only on your own computer |
+| **Remote** | Files that live on GitHub's servers (the cloud copy) |
+| **Commit** | A saved snapshot of your changes, with a message describing what you did |
+| **Push** | Sending your commits from your computer up to GitHub |
+| **Pull** | Downloading the latest changes from GitHub to your computer |
+| **Branch** | An independent copy of the project where you can work without affecting the main version |
+| **Merge** | Combining changes from one branch into another |
+| **Staging Area** | A holding area where you place files before committing them |
+| **Hash / SHA** | A unique ID code (e.g., `a3f9c12`) assigned to every commit |
+| **Diff** | A colour-coded comparison showing what lines were added or removed |
+| **Origin** | The default name for your remote GitHub repository |
+| **Main** | The default name of the primary branch in your repository |
+
+---
+
 ### 1. Introduction
 Imagine you are delivering a final presentation for the company with your teammates, and everybody is using Google Docs or Word, sending emails back and forth after each change. It is the final day, and people rushing to finish on time are overwriting each other's work, with no way to know who changed what. In the end, you lose time, nerves, and the quality of the work suffers as well.
 
@@ -99,6 +123,14 @@ To make sure that each team member's name shows up in Github after pushing, RStu
 
 ### 3. Basic Operation for Daily Use
 
+**The Golden Rule of GitHub — always follow this order every single day:**
+
+```
+PULL  →  EDIT  →  STAGE  →  COMMIT  →  PUSH
+```
+> Skip "Pull" at the start and you risk creating conflicts with your teammates' work.
+
+---
 **As a Key Concept, there are three Git Environments: Local, Staging, and GitHub**<br>
 To collaborate effectively, it is essential to understand that Git manages your work across three separate stages, which is a major shift from the automatic, single-layer syncing of Google Docs:
 
@@ -164,8 +196,8 @@ d. Click Commit.<br>
 e. In the box that appears, type a short message describing what you did.<br>
 f. Click Commit to confirm.<br>
 
-> A good commit message answers the question: *"What did this change do?"* — not just
-> *"I changed something."*
+> A good commit message answers the question: *"What did this change do?"* — not just *"I changed something."*
+
 
 #### 4.2 How to check a history and differences
 **In RStudio:**<br>
@@ -244,18 +276,50 @@ This will automatically download any commits made on Github and merge them with 
 
 #### 4.6 How to communicate with team members
 
-<<<<<<< HEAD
 **Commit messages as communication:**
 
-Every commit message is visible to the whole team in the history. Writing clear messages
-means your teammates always know what you were working on without having to ask.
+Good communication is what keeps a team from stepping on each other's work. GitHub gives you several built-in tools for this:
 
+**Commit messages as communication:**
+
+Every commit message is visible to the whole team in the history. Writing clear messages means your teammates always know what you were working on without having to ask.
+
+```
+# Examples of helpful commit messages:
+"Add Section 3 daily workflow steps"
+"Fix merge conflict in introduction"
+"Update Do's and Don'ts table with new examples"
+```
+**GitHub Issues:**
+
+Issues are like a built-in task board inside your repository. You can use them to:
+
+- Report a problem (e.g., "Section 4.2 screenshot is missing")
+- Assign tasks to specific team members
+- Track progress — close the Issue when the task is done
+
+To create an Issue: Go to your repository on GitHub → click the **Issues** tab → click **New Issue**.
+
+### 4.7 Understanding Branches
+
+A **branch** is an independent copy of the project where you can work freely without affecting the `main` version that everyone shares. Think of it like making a photocopy of a document to draft edits on — you only update the original once you are happy with your changes.
+
+**Why branches matter for teams:**
+
+- Team members can work on different features at the same time without interfering with each other
+- The `main` branch always stays clean and working
+- If something breaks on your branch, it does not affect anyone else
+
+**How to create a branch in RStudio:**
+
+1. In the Git tab, click the **branch icon** (purple icon near the top right of the Git pane).
+2. Type a descriptive name for your branch (e.g., `feature/add-section-5` or `fix/typo-introduction`).
+3. Click **Create**. RStudio will automatically switch you to that branch
 ```{r}
 
 ```
 
 =======
->>>>>>> 4a01c6e40422fa653d0572728deeef8f3726c90e
 
 ### 5. Best Practices for Collaboration
 
@@ -272,6 +336,54 @@ means your teammates always know what you were working on without having to ask.
 | Use descriptive branch names: 'feature/add-graphics', 'fix/introduction' | Use vague branch names like 'test', 'new', or 'edits' |
 
 #### 5.2 Common Errors & How to resolve Conflicts:
+
+**Error 1: Push Rejected**
+
+```
+! [rejected] main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/...'
+```
+
+**What it means:** Someone else pushed changes to GitHub while you were working. Your local version is now behind the remote version.
+
+**How to fix it:**
+
+```
+git pull origin main
+```
+
+Pull first to download the new changes, then push again. If there are no conflicts, it will work automatically.
+
+**Error 2: Merge Conflict**
+
+```
+CONFLICT (content): Merge conflict in filename.Rmd
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+**What it means:** You and a teammate both edited the same lines of the same file, and Git cannot decide which version to keep. Git will mark the conflicting section in the file like this:
+
+```
+<<<<<<< HEAD
+Your version of the text here
+=======
+Your teammate's version of the text here
+>>>>>>> 4a01c6e40422fa653d0572728deeef8f3726c90e
+```
+
+**How to fix it:**
+
+1. Open the file in RStudio. Look for the `<<<<<<<`, `=======`, and `>>>>>>>` markers.
+2. Decide which version to keep (or write a combined version).
+3. Delete all three marker lines completely.
+4. Save the file, stage it, and commit:
+
+```
+git add filename.Rmd
+git commit -m "Resolve merge conflict in filename.Rmd"
+```
+
+> **Tip:** The best way to avoid merge conflicts is to Pull at the start of every session and work on separate files or branches from your teammates.
 
 
 ## References and Sources

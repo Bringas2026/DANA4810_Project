@@ -1,0 +1,18 @@
+---
+title: "DANA 4810 Project Part 3"
+output: pdf_document
+date: "2026-06-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Course: DANA 4810**
+
+**Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
+
+# Instruction Manual
+## Cross-validation Techniques
+
+

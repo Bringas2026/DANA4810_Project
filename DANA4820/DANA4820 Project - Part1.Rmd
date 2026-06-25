@@ -1,0 +1,35 @@
+---
+title: "DANA 4820 Project Part 1"
+output: html_document
+date: "2026-07-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Course: DANA 4820**
+
+**Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
+
+# Part (a)
+## Summary of the Beyond Multiple Linear Regression, Chapter 4
+
+## Chapter 4.1
+
+## Chapter 4.2
+### Chapter 4.2.1
+### Chapter 4.2.2
+## Chapter 4.3
+
+## Chapter 4.4
+### Chapter 4.4.1
+### Chapter 4.4.2
+### Chapter 4.4.3
+### Chapter 4.4.4
+### Chapter 4.4.5
+### Chapter 4.4.6
+### Chapter 4.4.7
+
+
+

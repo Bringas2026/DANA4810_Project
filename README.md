@@ -1,4 +1,4 @@
-DANA4810 Project Work
+DANA4810 & DANA4820 Project Work
 
 <Team Member>
 - Nandini <nbhatia03@mylangara.ca>

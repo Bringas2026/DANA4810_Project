@@ -26,10 +26,133 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Chapter 4.4.1
 ### Chapter 4.4.2
 ### Chapter 4.4.3
-### Chapter 4.4.4
-### Chapter 4.4.5
-### Chapter 4.4.6
-### Chapter 4.4.7
+
+## 4.4.4 Using Deviances to Compare Models
+
+```{r}
+# Null model
+model0 <- glm(total ~ 1, family = poisson, data = fHH1)
+
+# Model with age (linear)
+modela <- glm(total ~ age, family = poisson, data = fHH1)
+
+# Drop-in-deviance test
+drop_in_dev_1 <- anova(model0, modela, test = "Chisq")
+drop_in_dev_1
+```
+
+Our objective here is to assess if the age is a significant predictor for the household size, a drop in deviance test was conducted to compare the null model to the model incorporating age as linear predictor. The null model, which contains no predictors, has a residual deviance of 2362 on 1499 degrees of freedom. When included the age as a predictor, the residual deviance decreased to 2337 on 1498 degrees of freedom, this results in a drop in deviance of 25.4 with one degree of freedom. Then we evaluate this against a chi-quare distribution with one degree of freedom, resulting in a very tiny p-value ($4.66 \times
+10^{-7}$) that is below the significance threshold of 0.05
+Interpretation: there is statistically significant evidence that age
+is a meaningful predictor of household size, and therefore the model with
+age is preferred over the null model.
+
+## 4.4.6 Second Order Model
+
+```{r}
+# Add quadratic term
+fHH1 <- fHH1 %>% mutate(age2 = age * age)
+
+# Fit quadratic model
+modela2 <- glm(total ~ age + age2, family = poisson, data = fHH1)
+summary(modela2)
+
+# Drop-in-deviance test: linear vs quadratic
+drop_in_dev_2 <- anova(modela, modela2, test = "Chisq")
+drop_in_dev_2
+
+# Calculate optimal age
+beta1 <- coef(modela2)["age"]
+beta2 <- coef(modela2)["age2"]
+optimal_age <- -beta1 / (2 * beta2)
+cat("Optimal age:", round(optimal_age, 2))
+
+# Maximum estimated household size
+max_log_total <- coef(modela2)[1] + beta1 * optimal_age +
+                 beta2 * optimal_age^2
+cat("Max mean household size:", round(exp(max_log_total), 3))
+```
+
+We already showed that age metters for household size. And when we looked at our exploratory graphs earlier(section 4.4.2), the relationship wasn't a straight line - it when up, peaked and then came down. So we add age^2 to let the model bend like it should.
+The equation:
+
+$$\log(\text{mean numHouse}) = -0.333 + 0.071 \cdot \text{age} - 0.00071 \cdot \text{age}^2$$
+
+The positive coefficient associated with the linear age  ($\hat{\beta}_1
+= 0.071$, $p < 0.001$) indicates that household size initially increases
+with the age of the household head. The negative coefficient associated
+with the quadratic term ($\hat{\beta}_2 = -0.00071$, $p < 0.001$) confirms
+the presence of a concave relationship, in other words household size reaches a
+maximum at a certain age before subsequently declining. We can expect that household size grows as children are born and raised, then decreases as children leave the household.
+
+We then asked: does adding age^2 actually make the model better or not? We compared the simpler model to the more complex model(age+age^2). The deviance dropped by 136.1 and the p-value is almost zero. Therefore the inclusion of the quadratic
+term significantly improves model fit, and the quadratic model
+is strongly preferred over the linear model.
+
+To determine the age at which household size is estimated to be at its
+maximum, the derivative of the fitted model with respect to age was set
+equal to zero:
+
+$$\frac{d}{d(\text{age})}\log(\text{total}) = 0.071 - 2(0.00071)\cdot\text{age} = 0$$
+$$\text{age} = 0.071 / 0.00142 \approx 50.04 \text{ years}$$
+
+To find exactly where the peak is, we use a basic calculus trick: at the very top of a curve, the slope is flat (zero). So we take the derivative of our equation, set it to zero, and solve for age. That gives us age ≈ 50.04.
+
+Then we plug that age back into the original equation to find out how big the household is at that peak. That gives us a log value of 1.441, and converting that back to a normal number (using e^1.441) gives us about 4.23 people.
+
+Interpretation: Household size peaks when the head of household is around 50 years old, with about 4.2 extra people living in the home at that point — then it starts declining again.
+
+## 4.4.7 Adding a Covariate
+
+```{r}
+# Fit quadratic model with location
+modela2L <- glm(total ~ age + age2 + location,
+                family = poisson, data = fHH1)
+summary(modela2L)
+
+# Drop-in-deviance test: quadratic vs quadratic + location
+drop_in_dev_3 <- anova(modela2, modela2L, test = "Chisq")
+drop_in_dev_3
+
+# Rate ratios and confidence intervals
+exp(coef(modela2L))
+exp(confint(modela2L))
+```
+
+So far our model only uses age to predict household size. But it's reasonable to think that where someone lives might also affect how many people are in their household. So we wanted to test: after we've already accounted for age, does location also matter?
+
+Location isn't a number, it's a category (Central Luzon, Davao, Ilocos, Metro Manila, Visayas), so R can't just drop it into the equation as-is. Instead, R picks one category as the "baseline" to compare everything else to — here it picked Central Luzon — and creates a 0/1 indicator for each of the other four regions. So basically, the model is asking "compared to Central Luzon, is this region higher or lower?" for each region separately.
+
+
+The fitted model incorporating location is expressed as follows:
+
+$$\log(\text{total}) = -0.384 + 0.070 \cdot \text{age} - 0.00070 \cdot \text{age}^2 + 0.061 \cdot \text{IlocosRegion} + 0.054 \cdot \text{MetroManila} + 0.112 \cdot \text{Visayas} - 0.019 \cdot \text{DavaoRegion}$$
+
+The coefficients for age and age$^2$ remained stable in magnitude and
+statistical significance following the inclusion of location, suggesting
+that the quadratic relationship between age and household size is robust
+to the addition of this covariate.
+
+Reading the region coefficients individually:
+
+- **Visayas** ($\hat{\beta} = 0.112$, $p = 0.007$): Households here are 
+  about 11.9% larger than Central Luzon, on average, after controlling 
+  for age, and this difference is statistically significant.
+- **Ilocos Region** ($\hat{\beta} = 0.061$, $p = 0.25$): Slightly larger 
+  than Central Luzon, but not statistically significant — this could 
+  simply be due to random variation.
+- **Metro Manila** ($\hat{\beta} = 0.054$, $p = 0.25$): Similarly slightly 
+  larger than Central Luzon, but also not statistically significant.
+- **Davao Region** ($\hat{\beta} = -0.019$, $p = 0.72$): Slightly smaller 
+  than Central Luzon, but again not statistically significant.
+
+So, when considered individually, only Visayas stands out as truly 
+different from Central Luzon.
+
+When a categorical variable like location creates multiple dummy variables, you can't just look at each one separately and decide if "location matters." You have to test whether location as a whole — all 4 regions together — improves the model. That's exactly what the drop-in-deviance test does.
+
+We compared the model without location to the model with location, and the deviance dropped by 13.14 with a p-value of 0.011 — below 0.05. So even though 3 out of 4 regions weren't individually significant, as a group, location does meaningfully improve the model.
+
 
 
 

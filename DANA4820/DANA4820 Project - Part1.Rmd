@@ -1,12 +1,23 @@
 ---
 title: "DANA 4820 Project Part 1"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 date: "2026-07-01"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# Load the dataset (ensure fHH1.csv is in the same folder as this .Rmd,
+# or update the path below)
+fHH1 <- read.csv("https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv")
 ```
+
 
 **Course: DANA 4820**
 
@@ -29,6 +40,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 4.4.4 Using Deviances to Compare Models
 
+Our objective here is to assess if the age is a significant predictor for the household size, a drop in deviance test was conducted to compare the null model to the model incorporating age as linear predictor.  
+The hypotheses are formally stated as follows:
+
+$$H_0: \log(\lambda) = \beta_0 \quad (\beta_1 = 0, \text{ age is not a significant predictor})$$
+
+$$H_A: \log(\lambda) = \beta_0 + \beta_1\text{age} \quad (\beta_1 \neq 0, \text{ age is a significant predictor})$$
 ```{r}
 # Null model
 model0 <- glm(total ~ 1, family = poisson, data = fHH1)
@@ -41,13 +58,20 @@ drop_in_dev_1 <- anova(model0, modela, test = "Chisq")
 drop_in_dev_1
 ```
 
-Our objective here is to assess if the age is a significant predictor for the household size, a drop in deviance test was conducted to compare the null model to the model incorporating age as linear predictor. The null model, which contains no predictors, has a residual deviance of 2362 on 1499 degrees of freedom. When included the age as a predictor, the residual deviance decreased to 2337 on 1498 degrees of freedom, this results in a drop in deviance of 25.4 with one degree of freedom. Then we evaluate this against a chi-quare distribution with one degree of freedom, resulting in a very tiny p-value ($4.66 \times
+The null model, which contains no predictors, has a residual deviance of 2362 on 1499 degrees of freedom. When included the age as a predictor, the residual deviance decreased to 2337 on 1498 degrees of freedom, this results in a drop in deviance of 25.4 with one degree of freedom. Then we evaluate this against a chi-quare distribution with one degree of freedom, resulting in a very tiny p-value ($4.66 \times
 10^{-7}$) that is below the significance threshold of 0.05
-Interpretation: there is statistically significant evidence that age
+Interpretation: We reject $H_0$. There is statistically significant evidence that age
 is a meaningful predictor of household size, and therefore the model with
 age is preferred over the null model 
 
 ## 4.4.6 Second Order Model
+
+We already showed that age matters for household size. Then when we looked at our exploratory graphs earlier(section 4.4.2), the relationship wasn't a straight line - it when up, peaked and then came down. To determine whether the quadratic term significantly improves model fit, a drop-in-deviance test is conducted comparing the linear model to the quadratic model. The hypotheses are
+formally stated as follows:
+
+$$H_0: \log(\lambda) = \beta_0 + \beta_1\text{age} \quad (\beta_2 = 0, \text{ quadratic term is not needed})$$
+
+$$H_A: \log(\lambda) = \beta_0 + \beta_1\text{age} + \beta_2\text{age}^2 \quad (\beta_2 \neq 0, \text{ quadratic term is needed})$$
 
 ```{r}
 # Add quadratic term
@@ -73,8 +97,7 @@ max_log_total <- coef(modela2)[1] + beta1 * optimal_age +
 cat("Max mean household size:", round(exp(max_log_total), 3))
 ```
 
-We already showed that age metters for household size. And when we looked at our exploratory graphs earlier(section 4.4.2), the relationship wasn't a straight line - it when up, peaked and then came down. So we add age^2 to let the model bend like it should.
-The equation:
+
 
 $$\log(\text{mean numHouse}) = -0.333 + 0.071 \cdot \text{age} - 0.00071 \cdot \text{age}^2$$
 
@@ -85,9 +108,7 @@ with the quadratic term ($\hat{\beta}_2 = -0.00071$, $p < 0.001$) confirms
 the presence of a concave relationship, in other words household size reaches a
 maximum at a certain age before subsequently declining. We can expect that household size grows as children are born and raised, then decreases as children leave the household.
 
-We then asked: does adding age^2 actually make the model better or not? We compared the simpler model to the more complex model(age+age^2). The deviance dropped by 136.1 and the p-value is almost zero. Therefore the inclusion of the quadratic
-term significantly improves model fit, and the quadratic model
-is strongly preferred over the linear model.
+We then asked: does adding age^2 actually make the model better or not? We compared the simpler model to the more complex model(age+age^2). The deviance dropped by 136.1 and the p-value is almost zero. Therefore  we reject $H_0$and conclude that the inclusion of the quadratic term significantly improves model fit, and the quadratic model is strongly preferred over the linear model.
 
 To determine the age at which household size is estimated to be at its
 maximum, the derivative of the fitted model with respect to age was set
@@ -104,6 +125,17 @@ Interpretation: Household size peaks when the head of household is around 50 yea
 
 ## 4.4.7 Adding a Covariate
 
+So far our model only uses age to predict household size. But it's reasonable to think that where someone lives might also affect how many people are in their household. So we wanted to test: after we've already accounted for age, does location also matter?
+
+Location isn't a number, it's a category (Central Luzon, Davao, Ilocos, Metro Manila, Visayas), so R can't just drop it into the equation as-is. Instead, R picks one category as the "baseline" to compare everything else to — here it picked Central Luzon — and creates a 0/1 indicator for each of the other four regions. So basically, the model is asking "compared to Central Luzon, is this region higher or lower?" for each region separately. The hypotheses are formally stated 
+as follows:
+
+$$H_0: \log(\lambda) = \beta_0 + \beta_1\text{age} + \beta_2\text{age}^2 \quad (\text{location does not improve the model})$$
+
+$$H_A: \log(\lambda) = \beta_0 + \beta_1\text{age} + \beta_2\text{age}^2 + \beta_3\text{location} \quad (\text{location improves the model})$$
+
+
+
 ```{r}
 # Fit quadratic model with location
 modela2L <- glm(total ~ age + age2 + location,
@@ -118,10 +150,6 @@ drop_in_dev_3
 exp(coef(modela2L))
 exp(confint(modela2L))
 ```
-
-So far our model only uses age to predict household size. But it's reasonable to think that where someone lives might also affect how many people are in their household. So we wanted to test: after we've already accounted for age, does location also matter?
-
-Location isn't a number, it's a category (Central Luzon, Davao, Ilocos, Metro Manila, Visayas), so R can't just drop it into the equation as-is. Instead, R picks one category as the "baseline" to compare everything else to — here it picked Central Luzon — and creates a 0/1 indicator for each of the other four regions. So basically, the model is asking "compared to Central Luzon, is this region higher or lower?" for each region separately.
 
 
 The fitted model incorporating location is expressed as follows:
@@ -151,7 +179,10 @@ different from Central Luzon.
 
 When a categorical variable like location creates multiple dummy variables, you can't just look at each one separately and decide if "location matters." You have to test whether location as a whole — all 4 regions together — improves the model. That's exactly what the drop-in-deviance test does.
 
-We compared the model without location to the model with location, and the deviance dropped by 13.14 with a p-value of 0.011 — below 0.05. So even though 3 out of 4 regions weren't individually significant, as a group, location does meaningfully improve the model.
+We compared the model without location to the model with location, and the deviance dropped by 13.14 with a p-value of 0.011 — below 0.05. So even though 3 out of 4 regions weren't individually significant, as a group, location does meaningfully improve the model. Therefore, we 
+reject $H_0$ and conclude that location, as a whole, is a statistically 
+significant predictor of household size after controlling for age, and 
+it is retained in the final model.
 
 
 

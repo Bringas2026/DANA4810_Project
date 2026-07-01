@@ -13,14 +13,164 @@ knitr::opts_chunk$set(echo = TRUE)
 **Team members: Nandini Bhatia, Diego Alberto, Khushpreet Kaur, Haruka Sawakami**
 
 # Part (a)
+# 4. Poisson Regression
 ## Summary of the Beyond Multiple Linear Regression, Chapter 4
 
-## Chapter 4.1
+```{r load_packages4, message = FALSE, warning=FALSE}
+# Packages required for Chapter 4
+#install.packages("mosaic")
+#install.packages("pscl")
+#install.packages("multcomp")
+#install.packages("pander")
+library(gridExtra)
+library(knitr)
+library(kableExtra)
+library(mosaic)
+library(xtable)
+library(pscl) 
+library(multcomp)
+library(pander)
+library(MASS)
+library(tidyverse)
+library(ggplot2)
+```
 
-## Chapter 4.2
-### Chapter 4.2.1
-### Chapter 4.2.2
-## Chapter 4.3
+
+## 4.1 Learning Objectives
+The primary objective of this section is to understand the foundational concepts of Poisson regression and recognize why Simple Linear Regression models are inadequate for modeling count data. Through this chapter, we aim to grasp the model's assumptions for inference, the estimation and interpretation of coefficients using R, and the methods for comparing models through hypothesis testing.
+
+
+## 4.2 Introduction to Poisson Regression
+Poisson regression is specifically designed to model response variables ($Y$) that represent counts, that is the average number of occurrences per unit of time or space. Examples out of four include the annual number of motorcycle deaths in a state or the number of deformed fish in Minnesota lakes over the last decade. Count data has unique characteristics: they are discrete, can take only positive number and theoretically unbounded above (from 0 to $\infty$).
+
+While it might seem to be reasonable to apply a standard Linear Least Squares Regression (LLSR) model, such as $\lambda_i = \beta_0 + \beta_1 x_i$, doing so introduces two critical violations of regression assumptions:
+
+1. **Violation of Boundedness (Negative Values):**<br>
+A linear regression line extends infinitely and is guaranteed to predict negative values for certain values of $x_i$. However, the Poisson mean rate parameter ($\lambda_i$) represents an average count and can only take non-negative values.
+
+2. **Violation of Homoscedasticity (Equal Variance):**<br>
+In LLSR, the variance of residuals is assumed to be constant across all levels of $X$. For Poisson data, however, as the mean rate ($\lambda$) increases, the variability of the data also increases. This is because a key property of the Poisson distribution is that its mean is equal to its variance ($E(Y) = Var(Y) = \lambda$).
+
+
+To resolve these issues, instead of modeling $\lambda_i$ directly, we express the natural logarithm of the mean rate, $\log(\lambda_i)$, as a linear function:
+
+$$\log(\lambda_i) = \beta_0 + \beta_1 x_i$$
+
+Taking the exponential of both sides keeps the predicted mean rate $\lambda_i$ positive for any value of $x_i$, which satisfies the mathematical constraint that count data cannot be negative.
+
+Furthermore, unlike the LLSR, the Poisson regression model does not contain a separate error term ($\epsilon$). In the LLSR, $\epsilon$ represents the random variation around the mean. In Poisson regression, a separate error term is unnecessary because the single parameter $\lambda_i$ completely determines both the mean and the variance of the response variable ($Y_i \sim \text{Poisson}(\lambda_i)$).
+
+
+### 4.2.1 Poisson Regression Assumptions
+For a Poisson regression model to use, the following four key assumptions must be satisfied:
+
+1. **Poisson Response:** The response variable must be a count of occurrences that follows a Poisson distribution within a defined unit of time or space.
+2. **Independence:** The observations must be independent of one another.
+3. **Mean = Variance:** A fundamental property of the Poisson distribution is that its mean is equal to its variance ($E(Y) = Var(Y) = \lambda$). We must check if the means and variances are approximately equal across groups of the explanatory variable.
+4. **Linearity:** The log of the mean rate, $\log(\lambda)$, must be a linear function of the explanatory variables ($X$).
+
+
+### 4.2.2 A Graphical Look at Poisson Regression
+```{r, OLSpois, fig.align="center",out.width="60%", fig.cap='Regression models: Linear regression (left) and Poisson regression (right).',echo=FALSE, warning=FALSE, message=FALSE}
+## Sample data for graph of OLS normality assumption
+## Code from https://stackoverflow.com/questions/31794876/ggplot2-how-to-curve-small-gaussian-densities-on-a-regression-line?rq=1
+
+set.seed(0)
+dat <- data.frame(x=(x=runif(10000, 0, 50)),
+                  y=rnorm(10000, 10*x, 100))
+
+## breaks: where you want to compute densities
+breaks <- seq(0, max(dat$x), len=5)
+dat$section <- cut(dat$x, breaks)
+
+## Get the residuals
+dat$res <- residuals(lm(y ~ x, data=dat))
+
+## Compute densities for each section, flip the axes, add means 
+## of sections.  Note: densities need to be scaled in relation 
+## to section size (2000 here)
+dens <- do.call(rbind, lapply(split(dat, dat$section), function(x) {
+  d <- density(x$res, n=5000)
+  res <- data.frame(x=max(x$x)- d$y*1000, y=d$x+mean(x$y))
+  res <- res[order(res$y), ]
+  ## Get some data for normal lines as well
+  xs <- seq(min(x$res), max(x$res), len=5000)
+  res <- rbind(res, data.frame(y=xs + mean(x$y),
+                x=max(x$x) - 1000*dnorm(xs, 0, sd(x$res))))
+  res$type <- rep(c("empirical", "normal"), each=5000)
+  res
+}))
+dens$section <- rep(levels(dat$section), each=10000)
+
+ols_assume <- ggplot(dat, aes(x, y)) +
+  geom_point(size = 0.1, alpha = .25) +
+  geom_smooth(method="lm", fill=NA, lwd=2) +
+  geom_path(data=dens[dens$type=="normal",], 
+            aes(x, y, group=section), 
+            color="salmon", lwd=1.1) +
+  theme_bw() +
+  geom_vline(xintercept=breaks, lty=2)
+
+# Now make Poisson regression picture
+set.seed(0)
+dat <- data.frame(x=(x=runif(1000, 0, 20)),
+                  y=rpois(1000, exp(.1*x)))
+
+## breaks: where you want to compute densities
+breaks <- seq(2, max(dat$x), len=5)
+dat$section <- cut(dat$x, breaks)
+
+## Get the residuals
+dat$res <- dat$y - .1*dat$x
+
+## Compute densities for each section, flip the axes, add means
+## of sections.  Note: densities need to be scaled in relation 
+## to section size
+dens <- do.call(rbind, lapply(split(dat, dat$section), function(x) {
+  d <- density(x$res, n=500)
+  res <- data.frame(x=max(x$x)- d$y*10, y=d$x+mean(x$y))
+  res <- res[order(res$y), ]
+  ## Get some data for poisson lines as well
+  xs <- seq(min(x$y), max(x$y), len=500)
+  res <- rbind(res, data.frame(y=xs,
+          x=max(x$x) - 10*dpois(round(xs), exp(.1*max(x$x)))))
+  res$type <- rep(c("empirical", "poisson"), each=500)
+  res
+}))
+dens$section <- rep(levels(dat$section), each=1000)
+
+pois_assume <- ggplot(dat, aes(x, jitter(y, .25))) +
+  geom_point(size = 0.1) +
+  geom_smooth(method="loess", fill=NA, lwd=2) +
+  geom_path(data=dens[dens$type=="poisson",], 
+            aes(x, y, group=section), 
+            color="salmon", lwd=1.1) +
+  theme_bw() + ylab("y") + xlab("x") +
+  geom_vline(xintercept=breaks, lty=2)
+
+grid.arrange(ols_assume, pois_assume, ncol = 2)
+```
+
+Figure illustrates a comparison of the LLSR model for inference to Poisson regression using a log function of $\lambda$.
+
+Before fitting a Poisson regression model, we should visually evaluate our data to see if the assumptions hold. In standard linear regression, we look for a straight line in a scatterplot . However, for a Poisson regression model:
+
+1. **We do not expect a linear relationship between $X$ and the raw counts $Y$.** Instead, if the relationship follows a Poisson distribution, a scatterplot of the explanatory variable ($X$) against the response variable ($Y$) should show an exponential curve rather than a straight line.
+2. **We look for a linear relationship between $X$ and the log of the mean response.** To visually check the linearity assumption ($\log(\lambda) = \beta_0 + \beta_1 X$), we can break a continuous explanatory variable into discrete groups and calculate the mean for each group. 
+3. **The plot of the log means against $X$ should look approximately linear.** If the linearity assumption is satisfied, plotting the natural logarithm of these means against the average $X$ values for each group should show a reasonably straight line.
+
+
+## 4.3 Case Study Overview
+In this section, we overview the three case studies introduced in the textbook, each based on real data and real questions to illustrate different aspects of Poisson regression modeling:
+
+1. **Household Size in the Philippines:** Introduces the basic idea of regression with a Poisson response along with its structural assumptions, adding a quadratic term to determine an optimal size, and methods of model comparison.
+2. **Campus Crime:** Introduces offsets to account for sampling effort and overdispersion when actual variability exceeds what is expected.
+3. **Weekend Drinking:** Uses a modification of a Poisson model to account for more zeros than expected.
+
+*Note: Since the topics covered with campus crime and weekend drinking case studies are beyond the scope of our course, we will focus exclusively on the first case study: Household Size in the Philippines.*
+
+
+
 
 ## Chapter 4.4
 ### Chapter 4.4.1
